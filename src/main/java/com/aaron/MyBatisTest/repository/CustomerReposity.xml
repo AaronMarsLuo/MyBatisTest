@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aaron.MyBatisTest.repository.CustomerReposity">
+    <resultMap id="customerGoods" type="com.aaron.MyBatisTest.entity.Customer">
+        <id column="cid" property="id" javaType="int"/>
+        <result column="cname" property="name" javaType="java.lang.String"/>
+        <collection property="goods" ofType="com.aaron.MyBatisTest.entity.Goods">
+            <id column="gid" property="id"/>
+            <result column="gname" property="name"/>
+        </collection>
+    </resultMap>
+    <select id="getGoodsByCustomerId" parameterType="int" resultMap="customerGoods">
+        select c.id as cid,c.`name` as cname,g.id as gid,g.`name` as gname from customer as c,goods as g,customer_goods as cg where c.id=#{id} and cg.cid=c.id and cg.gid=g.id;
+    </select>
+</mapper>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+    <settings>
+        <!--打印SQL语句-->
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+        <!--开启延时加载-->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <!--开启二级缓存-->
+        <setting name="cacheEnabled" value="true"/>
+    </settings>
+    <environments default="development">
+        <!--配置Mybatis运行环境-->
+        <environment id="development">
+            <!--配置JDBC事务管理-->
+            <transactionManager type="JDBC"></transactionManager>
+            <!--POOLED配置JDBC数据源连接池-->
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/mybatis?serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false"/>
+                <property name="username" value="root"/>
+                <property name="password" value="luomin3790"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!--注册AccountMapper.xml-->
+    <mappers>
+        <mapper resource="com/aaron/MyBatisTest/mapper/AccountMapper.xml"></mapper>
+        <mapper resource="com/aaron/MyBatisTest/repository/AccountReposity.xml"></mapper>
+        <mapper resource="com/aaron/MybatisTEst/repository/StudentReposity.xml"></mapper>
+        <mapper resource="com/aaron/MybatisTEst/repository/ClassesReposity.xml"></mapper>
+        <mapper resource="com/aaron/MybatisTEst/repository/CustomerReposity.xml"></mapper>
+    </mappers>
+</configuration>

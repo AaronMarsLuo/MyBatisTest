@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aaron.MyBatisTest.repository.AccountRepository">
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache">
+        <!--最后一次访问至失效的时间-->
+        <property name="timeToIdleSeconds" value="3600"/>
+        <!--创建至失效的时间-->
+        <property name="timeToLiveSeconds" value="3600"/>
+        <!--回收策略-->
+        <property name="memoryStoreEvictionPolicy" value="LRU"/>
+    </cache>
+    <insert id="insert" parameterType="com.aaron.MyBatisTest.entity.Account">
+        insert into t_account(username,password,age) values(#{username},#{password},#{age})
+    </insert>
+    <update id="update" parameterType="com.aaron.MyBatisTest.entity.Account">
+        update t_account set username=#{username},password=#{password},age=#{age} where id=#{id}
+    </update>
+    <delete id="deleteById" parameterType="int">
+        delete from t_account where id=#{id}
+    </delete>
+    <select id="findAll" resultType="com.aaron.MyBatisTest.entity.Account">
+        select id,username,password,age from t_account;
+    </select>
+    <select id="findById" parameterType="int" resultType="com.aaron.MyBatisTest.entity.Account">
+        select id,username,password,age from t_account where id=#{id}
+    </select>
+    <select id="findByName" parameterType="java.lang.String" resultType="com.aaron.MyBatisTest.entity.Account">
+        select id,username,password,age from t_account where username=#{name}
+    </select>
+    <select id="findByNameAndAge" resultType="com.aaron.MyBatisTest.entity.Account">
+        select id,username,password,age from t_account where username=#{param1} and age=#{param2}
+    </select>
+    <select id="findDynamically" parameterType="com.aaron.MyBatisTest.entity.Account" resultType="com.aaron.MyBatisTest.entity.Account">
+        select id,username,password,age from t_account
+        <where>
+            <choose>
+            <when test="id!=0">
+                id=#{id}
+            </when>
+            <when test="username!=null">
+                username=#{username}
+            </when>
+            <when test="password!=null">
+                password=#{password}
+            </when>
+            <when test="age!=0">
+                age=#{age}
+            </when>
+            </choose>
+        </where>
+    </select>
+    <select id="findTrimly" parameterType="com.aaron.MyBatisTest.entity.Account" resultType="com.aaron.MyBatisTest.entity.Account">
+        select id,username,password,age from t_account
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id!=null">
+                id=#{id}
+            </if>
+            <if test="username!=null">
+                and username=#{username}
+            </if>
+            <if test="password!=null">
+                and password=#{password}
+            </if>
+            <if test="age!=0">
+                and age=#{age}
+            </if>
+        </trim>
+    </select>
+    <select id="findByIds" resultType="com.aaron.MyBatisTest.entity.Account" parameterType="java.util.List">
+        select id,username,password,age from t_account where id in
+        <foreach collection="list" open="(" close=")" separator="," item="every">
+            #{every}
+        </foreach>
+    </select>
+</mapper>
